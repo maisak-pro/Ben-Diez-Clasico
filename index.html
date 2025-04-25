@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Serie</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      background: #111;
+      color: white;
+      padding: 20px;
+    }
+    video {
+      width: 80%;
+      height: auto;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    .controls {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    .info {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mi Serie</h1>
+  <div class="info" id="infoCapitulo">Capítulo: 1</div>
+  <video id="videoPlayer" controls>
+    <source id="videoSource" src="capitulos/1.mp4" type="video/mp4">
+    Tu navegador no soporta el video.
+  </video>
+  <div class="controls">
+    <button onclick="cambiarCapitulo(-1)">⏮️ Anterior</button>
+    <button onclick="cambiarCapitulo(1)">⏭️ Siguiente</button>
+  </div>
+
+  <script>
+    const totalCapitulos = 13;
+    let capituloActual = parseInt(localStorage.getItem("capituloGuardado")) || 1;
+
+    const video = document.getElementById("videoPlayer");
+    const source = document.getElementById("videoSource");
+    const info = document.getElementById("infoCapitulo");
+
+    function cargarCapitulo() {
+      source.src = `capitulos/${capituloActual}.mp4`;
+      info.textContent = `Capítulo: ${capituloActual}`;
+      video.load();
+      video.play();
+      localStorage.setItem("capituloGuardado", capituloActual);
+    }
+
+    function cambiarCapitulo(delta) {
+      capituloActual += delta;
+      if (capituloActual < 1) capituloActual = 1;
+      if (capituloActual > totalCapitulos) capituloActual = totalCapitulos;
+      cargarCapitulo();
+    }
+
+    cargarCapitulo();
+  </script>
+</body>
+</html>
